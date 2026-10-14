@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+//This is the event class
 namespace RaceDayAPI.Models
 {
     public class Event
