@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+//This the event class which is used to store the event information in the database. It has a one to many relationship with the category class and a many to one relationship with the organiser class. The event class has a primary key of EventID and a foreign key of OrganiserID. The event class also has a collection of categories which is used to store the categories associated with the event.
 namespace RaceDayAPI.Models
 {
     public class Event
