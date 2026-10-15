@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
+// This is the enrollment model
 namespace RaceDayAPI.Models
 {
     public class Enrolment
