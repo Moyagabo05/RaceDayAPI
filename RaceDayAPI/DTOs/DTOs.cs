@@ -20,7 +20,10 @@
         public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
     }
-
+    
+    /// Data Transfer Object used for creating new events.
+    /// Ensures only valid data is accepted from the client.
+    
     public class EventCreateDto
     {
         public string Name { get; set; } = string.Empty;
