@@ -204,5 +204,32 @@ namespace RaceDayAPI.Tests
             var deletedEvent = await context.Events.FindAsync(1);
             Assert.Null(deletedEvent);
         }
+
+        // --- TEST 7: UPDATE EVENT (Not Found) ---
+        [Fact]
+        public async Task Update_ShouldReturnNotFound_WhenEventDoesNotExist()
+        {
+            // ARRANGE
+            using var context = CreateInMemoryContext();
+            var controller = new EventsController(context);
+
+            // Create a dummy DTO to send
+            var dto = new EventCreateDto
+            {
+                Name = "Ghost Event",
+                Description = "Desc",
+                EventDate = DateTime.Now,
+                Location = "Loc",
+                Distance = 5,
+                EventType = "Run"
+            };
+
+            // ACT
+            // Try to update an event with ID 999, which we know doesn't exist
+            var result = await controller.Update(999, dto);
+
+            // ASSERT
+            Assert.IsType<NotFoundResult>(result);
+        }
     }
 }

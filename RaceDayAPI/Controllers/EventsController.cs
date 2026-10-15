@@ -5,6 +5,11 @@ using RaceDayAPI.DTOs;
 using RaceDayAPI.Helpers;
 using RaceDayAPI.Models;
 
+
+// API Controller for managing race day events.
+// Handles CRUD operations for the Event entity.
+
+
 namespace RaceDayAPI.Controllers
 {
     [Route("api/[controller]")]
