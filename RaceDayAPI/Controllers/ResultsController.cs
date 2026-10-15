@@ -4,7 +4,7 @@ using RaceDayAPI.Data;
 using RaceDayAPI.DTOs;
 using RaceDayAPI.Helpers;
 using RaceDayAPI.Models;
-
+//This is the results controller
 namespace RaceDayAPI.Controllers
 {
     [Route("api/[controller]")]
