@@ -1,5 +1,6 @@
 ﻿namespace RaceDayAPI.Models
 {
+    //This is the category model
     public class Category
     {
         [System.ComponentModel.DataAnnotations.Key] public int CategoryID { get; set; }
