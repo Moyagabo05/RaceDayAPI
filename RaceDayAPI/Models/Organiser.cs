@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-
-    namespace RaceDayAPI.Models
+//This is the organiser model which is used to store the organiser information in the database. It has a one to one relationship with the user class and a one to many relationship with the event class. The organiser class has a primary key of OrganiserID and a foreign key of UserID.
+namespace RaceDayAPI.Models
     {
         public class Organiser
         {
