@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
+//This is the participants model
 namespace RaceDayAPI.Models
 {
     public class Participant
