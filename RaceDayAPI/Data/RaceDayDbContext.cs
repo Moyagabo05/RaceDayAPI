@@ -3,6 +3,10 @@ using RaceDayAPI.Models;
 
 namespace RaceDayAPI.Data
 {
+    
+    /// The main database context for the RaceDay API.
+    /// Manages the connection to the database and entity mappings.
+   
     public class RaceDayDbContext : DbContext
     {
         public RaceDayDbContext(DbContextOptions<RaceDayDbContext> options) : base(options) { }
