@@ -30,7 +30,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseSession(); // MUST be before UseAuthorization/Controllers
+app.UseSession(); 
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
