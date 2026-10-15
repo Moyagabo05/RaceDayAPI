@@ -12,6 +12,10 @@ using Xunit;
 
 namespace RaceDayAPI.Tests
 {
+    
+    /// Comprehensive unit tests for the EventsController.
+    /// Uses an in-memory database to ensure test isolation.
+    
     public class EventsControllerTests
     {
         // --- HELPER METHOD ---
