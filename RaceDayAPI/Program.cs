@@ -35,4 +35,21 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
+// Apply any pending EF Core migrations at startup (automatic migrations for dev)
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var db = services.GetRequiredService<RaceDayDbContext>();
+        db.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetService<ILogger<Program>>();
+        logger?.LogError(ex, "An error occurred while migrating or initializing the database.");
+        // In dev we don't rethrow to keep the app running, but surface error to logs
+    }
+}
+
 app.Run();
