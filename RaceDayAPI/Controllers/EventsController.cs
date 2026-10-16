@@ -5,11 +5,6 @@ using RaceDayAPI.DTOs;
 using RaceDayAPI.Helpers;
 using RaceDayAPI.Models;
 
-
-// API Controller for managing race day events.
-// Handles CRUD operations for the Event entity.
-
-
 namespace RaceDayAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -34,14 +29,15 @@ namespace RaceDayAPI.Controllers
         }
 
         [HttpPost]
-        //[RequireRole("Organiser")]
+        [RequireRole("Organiser")]
         public async Task<IActionResult> Create([FromBody] EventCreateDto dto)
         {
-            var orgId = 1;//HttpContext.Session.GetInt("UserId");
-            // Find the OrganiserID based on the logged-in User's UserID
-            var organiser = await _context.Organisers.FirstOrDefaultAsync(o => o.UserID == orgId);
+            var userId = HttpContext.Session.GetInt("UserId");
+            if (userId == null) return Unauthorized("Not logged in.");
 
-            if (organiser == null) return NotFound("Organiser not found."); // Safety check
+            var organiser = await _context.Organisers.FirstOrDefaultAsync(o => o.UserID == userId.Value);
+            if (organiser == null) return NotFound("Organiser profile not found.");
+
             var newEvent = new Event
             {
                 OrganiserID = organiser.OrganiserID,
@@ -58,11 +54,15 @@ namespace RaceDayAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        //[RequireRole("Organiser")]
+        [RequireRole("Organiser")]
         public async Task<IActionResult> Update(int id, [FromBody] EventCreateDto dto)
         {
+            var userId = HttpContext.Session.GetInt("UserId");
+            var organiser = await _context.Organisers.FirstOrDefaultAsync(o => o.UserID == userId.Value);
+
             var evt = await _context.Events.FindAsync(id);
             if (evt == null) return NotFound();
+            if (evt.OrganiserID != organiser?.OrganiserID) return Forbid();
 
             evt.Name = dto.Name; evt.Description = dto.Description;
             evt.EventDate = dto.EventDate; evt.Location = dto.Location;
@@ -73,11 +73,16 @@ namespace RaceDayAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-       // [RequireRole("Organiser")]
+        [RequireRole("Organiser")]
         public async Task<IActionResult> Delete(int id)
         {
+            var userId = HttpContext.Session.GetInt("UserId");
+            var organiser = await _context.Organisers.FirstOrDefaultAsync(o => o.UserID == userId.Value);
+
             var evt = await _context.Events.FindAsync(id);
             if (evt == null) return NotFound();
+            if (evt.OrganiserID != organiser?.OrganiserID) return Forbid();
+
             _context.Events.Remove(evt);
             await _context.SaveChangesAsync();
             return Ok("Event deleted.");
