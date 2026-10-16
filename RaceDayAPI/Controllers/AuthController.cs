@@ -4,7 +4,7 @@ using RaceDayAPI.Data;
 using RaceDayAPI.DTOs;
 using RaceDayAPI.Helpers;
 using RaceDayAPI.Models;
-// This is the authorization controller
+
 namespace RaceDayAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -17,57 +17,71 @@ namespace RaceDayAPI.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto dto)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
             if (await _context.Users.AnyAsync(u => u.Email == dto.Email))
-                return Conflict("Email already exists.");
-            // Validate required fields for roles
+                return Conflict(new { error = "Registration failed", detail = "Email already exists." });
+
             if (dto.Role == "Participant" && dto.DateOfBirth == null)
-                return BadRequest("DateOfBirth is required for Participant registration.");
+                return BadRequest(new { error = "Registration failed", detail = "DateOfBirth is required for Participant." });
 
-            var user = new User
-            {
-                Email = dto.Email,
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
-                Role = dto.Role,
-                CreatedAt = DateTime.Now,
-                // Populate profile fields on the Users table too
-                FirstName = dto.FirstName,
-                LastName = dto.LastName,
-                OrganisationName = dto.OrganisationName,
-                PhoneNumber = dto.PhoneNumber,
-                DateOfBirth = dto.DateOfBirth,
-                Gender = dto.Gender,
-                EmergencyContact = dto.EmergencyContact,
-                ClubName = dto.ClubName
-            };
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            if (dto.Role == "Organiser" && string.IsNullOrWhiteSpace(dto.PhoneNumber))
+                return BadRequest(new { error = "Registration failed", detail = "PhoneNumber is required for Organiser." });
 
-            if (dto.Role == "Organiser")
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
             {
-                _context.Organisers.Add(new Organiser
+                // 1. Create the base User (Auth only, matching Part 1 SQL)
+                var user = new User
                 {
-                    UserID = user.UserID,
-                    FirstName = dto.FirstName,
-                    LastName = dto.LastName,
-                    OrganisationName = dto.OrganisationName,
-                    PhoneNumber = dto.PhoneNumber ?? string.Empty
-                });
+                    Email = dto.Email.Trim(),
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
+                    Role = dto.Role,
+                    CreatedAt = DateTime.Now
+                };
+
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync(); // Generates UserID
+
+                // 2. Create the Role-Specific Profile
+                if (dto.Role == "Organiser")
+                {
+                    _context.Organisers.Add(new Organiser
+                    {
+                        UserID = user.UserID,
+                        FirstName = dto.FirstName,
+                        LastName = dto.LastName,
+                        OrganisationName = dto.OrganisationName,
+                        PhoneNumber = dto.PhoneNumber!
+                    });
+                }
+                else if (dto.Role == "Participant")
+                {
+                    _context.Participants.Add(new Participant
+                    {
+                        UserID = user.UserID,
+                        FirstName = dto.FirstName,
+                        LastName = dto.LastName,
+                        DateOfBirth = dto.DateOfBirth!.Value,
+                        Gender = dto.Gender ?? "Not Specified",
+                        EmergencyContact = dto.EmergencyContact ?? "None",
+                        ClubName = dto.ClubName
+                    });
+                }
+
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+                return Ok(new { message = "User registered successfully", userId = user.UserID, role = user.Role });
             }
-            else if (dto.Role == "Participant")
+            catch (DbUpdateException dbEx)
             {
-                _context.Participants.Add(new Participant
-                {
-                    UserID = user.UserID,
-                    FirstName = dto.FirstName,
-                    LastName = dto.LastName,
-                    DateOfBirth = dto.DateOfBirth!.Value,
-                    Gender = dto.Gender ?? string.Empty,
-                    EmergencyContact = dto.EmergencyContact ?? string.Empty,
-                    ClubName = dto.ClubName
-                });
+                await transaction.RollbackAsync();
+                return StatusCode(500, new { error = "Database error", detail = dbEx.InnerException?.Message ?? dbEx.Message });
             }
-            await _context.SaveChangesAsync();
-            return Ok("User registered successfully.");
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                return StatusCode(500, new { error = "Unexpected error", detail = ex.Message });
+            }
         }
 
         [HttpPost("login")]
@@ -75,12 +89,12 @@ namespace RaceDayAPI.Controllers
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
             if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
-                return Unauthorized("Invalid credentials.");
+                return Unauthorized(new { error = "Login failed", detail = "Invalid credentials." });
 
             HttpContext.Session.SetInt("UserId", user.UserID);
             HttpContext.Session.SetString("UserRole", user.Role);
 
-            return Ok(new { message = "Login successful", role = user.Role });
+            return Ok(new { message = "Login successful", role = user.Role, userId = user.UserID });
         }
 
         [HttpPost("logout")]
@@ -88,7 +102,7 @@ namespace RaceDayAPI.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-            return Ok("Logged out.");
+            return Ok(new { message = "Logged out successfully." });
         }
     }
 }
