@@ -12,7 +12,7 @@ using RaceDayAPI.Data;
 namespace RaceDayAPI.Migrations
 {
     [DbContext(typeof(RaceDayDbContext))]
-    [Migration("20261012131103_InitialCreate")]
+    [Migration("20261016160202_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -279,7 +279,7 @@ namespace RaceDayAPI.Migrations
                     b.HasOne("RaceDayAPI.Models.Event", "Event")
                         .WithMany("Categories")
                         .HasForeignKey("EventID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Event");
@@ -290,19 +290,19 @@ namespace RaceDayAPI.Migrations
                     b.HasOne("RaceDayAPI.Models.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("RaceDayAPI.Models.Event", "Event")
                         .WithMany()
                         .HasForeignKey("EventID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("RaceDayAPI.Models.Participant", "Participant")
                         .WithMany()
                         .HasForeignKey("ParticipantID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Category");
@@ -350,7 +350,7 @@ namespace RaceDayAPI.Migrations
                     b.HasOne("RaceDayAPI.Models.Enrolment", "Enrolment")
                         .WithMany()
                         .HasForeignKey("EnrolmentID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Enrolment");

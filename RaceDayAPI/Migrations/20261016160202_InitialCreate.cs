@@ -120,7 +120,7 @@ namespace RaceDayAPI.Migrations
                         column: x => x.EventID,
                         principalTable: "Events",
                         principalColumn: "EventID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -176,7 +176,7 @@ namespace RaceDayAPI.Migrations
                         column: x => x.EnrolmentID,
                         principalTable: "Enrolments",
                         principalColumn: "EnrolmentID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
