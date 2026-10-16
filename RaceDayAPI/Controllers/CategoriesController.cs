@@ -4,7 +4,7 @@ using RaceDayAPI.Data;
 using RaceDayAPI.DTOs;
 using RaceDayAPI.Helpers;
 using RaceDayAPI.Models;
-//This is the category controller
+
 namespace RaceDayAPI.Controllers
 {
     [Route("api/events/{eventId}/[controller]")]
