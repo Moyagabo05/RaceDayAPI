@@ -14,5 +14,6 @@ namespace RaceDayAPI.DTOs
         public string? PhoneNumber { get; set; }
         public string? EmergencyContact { get; set; }
         public string? ClubName { get; set; }
+        public string? ProfilePictureUrl { get; set; }
     }
 }

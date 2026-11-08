@@ -14,5 +14,6 @@ namespace RaceDayAPI.Models
         [Required, MaxLength(10)] public string Gender { get; set; } = string.Empty;
         [Required, MaxLength(200)] public string EmergencyContact { get; set; } = string.Empty;
         [MaxLength(200)] public string? ClubName { get; set; }
+        [MaxLength(500)] public string? ProfilePictureUrl { get; set; }
     }
 }

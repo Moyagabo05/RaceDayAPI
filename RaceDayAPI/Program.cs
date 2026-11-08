@@ -1,11 +1,23 @@
 using Microsoft.EntityFrameworkCore;
 using RaceDayAPI.Data;
+using RaceDayAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // 1. Add Database Context
 builder.Services.AddDbContext<RaceDayDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+//For Azure Blob Storage Service
+builder.Services.AddScoped<IAzureStorageService, AzureStorageService>(); 
+
+// Register authentication services so API ForbidResult responses have an authentication pipeline.
+builder.Services.AddAuthentication();
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultForbidScheme = "RaceDayForbid";
+})
+.AddScheme<Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions, RaceDayAPI.Helpers.NoOpAuthenticationHandler>(
+    "RaceDayForbid", _ => { });
 
 // 2. Add Session Management
 builder.Services.AddDistributedMemoryCache();
@@ -32,6 +44,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseSession(); 
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 

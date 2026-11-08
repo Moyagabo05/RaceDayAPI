@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using RaceDayAPI.Helpers;
 
 namespace RaceDayAPI.Helpers
 {
@@ -10,12 +11,12 @@ namespace RaceDayAPI.Helpers
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var sessionRole = context.HttpContext.Session.GetString("UserRole");
-            var sessionUserId = context.HttpContext.Session.GetInt("UserId");
+            var userId = context.HttpContext.GetUserId();
+            var role = context.HttpContext.GetRole();
 
-            if (sessionUserId == null || sessionRole != _role)
+            if (userId == null || role != _role)
             {
-                context.Result = new ForbidResult();
+                context.Result = new ForbidResult(); // Returns 403 Forbidden
             }
             base.OnActionExecuting(context);
         }
@@ -25,10 +26,10 @@ namespace RaceDayAPI.Helpers
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var sessionUserId = context.HttpContext.Session.GetInt("UserId");
-            if (sessionUserId == null)
+            var userId = context.HttpContext.GetUserId();
+            if (userId == null)
             {
-                context.Result = new UnauthorizedResult();
+                context.Result = new UnauthorizedResult(); // Returns 401 Unauthorized
             }
             base.OnActionExecuting(context);
         }

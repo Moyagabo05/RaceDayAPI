@@ -12,6 +12,13 @@ namespace RaceDayAPI.DTOs
         public int Position { get; set; }
     }
 
+    public class ResultCaptureDto
+    {
+        public int EnrolmentID { get; set; }
+        public string? FinishTime { get; set; }
+        public int? Position { get; set; }
+    }
+
     // Used for GET (Viewing results)
     public class ResultDto
     {
