@@ -1,0 +1,111 @@
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<style>
+    .home-hero {
+        background: linear-gradient(135deg, #075985 0%, #0369a1 48%, #2563eb 100%);
+        color: #fff;
+    }
+
+    .home-hero .btn-light {
+        color: #075985;
+        font-weight: 700;
+    }
+
+    .about-section {
+        background: linear-gradient(135deg, #0f172a, #1e3a8a);
+        color: #fff;
+    }
+
+    .challenge-card {
+        overflow: hidden;
+        border: 0;
+        box-shadow: 0 0.75rem 1.5rem rgba(15, 23, 42, 0.12);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .challenge-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 1rem 2rem rgba(15, 23, 42, 0.2);
+    }
+
+    .challenge-card img {
+        height: 210px;
+        object-fit: cover;
+    }
+</style>
+
+<main>
+    <section class="home-hero rounded-4 p-4 p-md-5 mb-5">
+        <div class="row align-items-center g-4 py-3 py-md-4">
+            <div class="col-lg-8">
+                <p class="text-uppercase fw-bold mb-2" style="letter-spacing: .15rem;">Run. Ride. Walk. Connect.</p>
+                <h1 class="display-3 fw-bold mb-3">Welcome to RaceDay</h1>
+                <p class="lead mb-4">Find your next challenge, meet your community, and make every kilometre count.</p>
+                <a class="btn btn-light btn-lg px-4" asp-controller="Events" asp-action="Index">
+                    Browse Upcoming Events
+                </a>
+            </div>
+            <div class="col-lg-4 text-center" aria-hidden="true">
+                <span class="display-1"></span>
+                <span class="display-3"></span>
+                <span class="display-1"></span>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-section rounded-4 p-4 p-md-5 mb-5">
+        <div class="row align-items-center g-4">
+            <div class="col-md-8">
+                <p class="text-uppercase fw-bold mb-2" style="letter-spacing: .12rem;">Our purpose</p>
+                <h2 class="fw-bold">About the Organization</h2>
+                <p class="lead mb-0">
+                    RaceDay connects South African runners, walkers, and cyclists with inclusive events
+                    that inspire healthy living, friendly competition, and stronger local communities.
+                </p>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <span class="display-2" aria-hidden="true">🇿🇦</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-5">
+        <div class="text-center mb-4">
+            <p class="text-primary text-uppercase fw-bold mb-2" style="letter-spacing: .12rem;">Find your finish line</p>
+            <h2 class="fw-bold">Choose Your Challenge</h2>
+            <p class="text-muted">There is a starting point for every adventure.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <article class="card challenge-card h-100">
+                    <img src="https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=900&q=85" class="card-img-top" alt="Runner competing on a road">
+                    <div class="card-body">
+                        <h3 class="h5 card-title fw-bold">Road Running</h3>
+                        <p class="card-text text-muted">Push your pace, set a personal best, and enjoy the energy of the road.</p>
+                    </div>
+                </article>
+            </div>
+            <div class="col-md-4">
+                <article class="card challenge-card h-100">
+                    <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=900&q=85" class="card-img-top" alt="Cyclist riding outdoors">
+                    <div class="card-body">
+                        <h3 class="h5 card-title fw-bold">Cycling Tours</h3>
+                        <p class="card-text text-muted">Discover scenic routes and share the ride with cyclists of every level.</p>
+                    </div>
+                </article>
+            </div>
+            <div class="col-md-4">
+                <article class="card challenge-card h-100">
+                    <img src="https://images.unsplash.com/photo-1504150558240-0b4fd8946624?auto=format&fit=crop&w=900&q=85" class="card-img-top" alt="People walking together outdoors">
+                    <div class="card-body">
+                        <h3 class="h5 card-title fw-bold">Community Walks</h3>
+                        <p class="card-text text-muted">Take it one step at a time while making memories with your community.</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+</main>
