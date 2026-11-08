@@ -2,9 +2,9 @@ name: .NET CI/CD Pipeline
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: [ "part3-mvc", "main", "master" ]
   pull_request:
-    branches: [ "main", "master" ]
+    branches: [ "part3-mvc", "main", "master" ]
 
 jobs:
   build-and-test:
@@ -22,8 +22,8 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
 
-    - name: Build
+    - name: Build API and MVC Projects
       run: dotnet build --no-restore --configuration Release
 
-    - name: Test
+    - name: Run Unit Tests
       run: dotnet test --no-build --configuration Release --verbosity normal
