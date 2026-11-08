@@ -1,0 +1,19 @@
+@model RaceDayWeb.ViewModels.ProfileViewModel
+@{ ViewData["Title"] = "My Profile"; }
+<h1>My Profile</h1>
+@if (TempData["SuccessMessage"] != null) { <div class="alert alert-success">@TempData["SuccessMessage"]</div> }
+@if (TempData["ErrorMessage"] != null) { <div class="alert alert-warning">@TempData["ErrorMessage"]</div> }
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row"><div class="col-md-6 mb-3"><label asp-for="FirstName" class="form-label"></label><input asp-for="FirstName" class="form-control" /></div><div class="col-md-6 mb-3"><label asp-for="LastName" class="form-label"></label><input asp-for="LastName" class="form-control" /></div></div>
+    <div class="mb-3"><label asp-for="EmergencyContact" class="form-label"></label><input asp-for="EmergencyContact" class="form-control" /></div>
+    <div class="mb-3"><label asp-for="ClubName" class="form-label"></label><input asp-for="ClubName" class="form-control" /></div>
+    <div class="mb-3"><label asp-for="ProfilePicture" class="form-label">Profile picture</label><input asp-for="ProfilePicture" class="form-control" accept="image/*" /></div>
+    @if (!string.IsNullOrWhiteSpace(Model.ProfilePictureUrl))
+    {
+        <img src="@Model.ProfilePictureUrl" alt="Current profile picture" class="rounded mb-3" style="width:140px;height:140px;object-fit:cover;" />
+    }
+    <button class="btn btn-primary" type="submit">Save profile</button>
+</form>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

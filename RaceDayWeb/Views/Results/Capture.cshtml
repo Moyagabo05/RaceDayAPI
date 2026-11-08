@@ -1,0 +1,68 @@
+﻿@model List<RaceDayWeb.ViewModels.CaptureResultViewModel>
+
+@{
+    ViewData["Title"] = "Capture Results";
+    var eventId = ViewBag.EventId;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Capture Results</h2>
+    <a asp-controller="Events" asp-action="Index" class="btn btn-secondary">Back to Events</a>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-warning">No participants are enrolled in this event yet.</div>
+}
+else
+{
+    <form action="/Results/Capture" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="eventId" value="@eventId" />
+        
+        <div class="table-responsive">
+            <table class="table table-bordered shadow-sm">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Participant</th>
+                        <th>Category</th>
+                        <th>Finish Time (HH:MM:SS)</th>
+                            <th>Position</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                @Model[i].ParticipantName
+                                <!-- Standard HTML inputs with correct naming for list binding -->
+                                <input type="hidden" name="results[@i].EnrolmentID" value="@Model[i].EnrolmentID" />
+                                <input type="hidden" name="results[@i].ParticipantName" value="@Model[i].ParticipantName" />
+                                <input type="hidden" name="results[@i].CategoryName" value="@Model[i].CategoryName" />
+                            </td>
+                            <td>@Model[i].CategoryName</td>
+                            <td>
+                                <input type="time" step="1" name="results[@i].FinishTime" value="@(Model[i].FinishTime?.ToString(@"hh\:mm\:ss"))" class="form-control" />
+                            </td>
+                            <td>
+                                <input type="number" min="1" name="results[@i].Position" value="@Model[i].Position" class="form-control" />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        
+        <button type="submit" class="btn btn-primary btn-lg">Save Results</button>
+    </form>
+}

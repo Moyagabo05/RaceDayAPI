@@ -1,0 +1,9 @@
+@model List<RaceDayWeb.ViewModels.CategoryViewModel>
+@{ ViewData["Title"] = "Categories"; var eventId = (int)ViewBag.EventId; }
+<h1>Event categories</h1>
+<a class="btn btn-primary mb-3" asp-action="Create" asp-route-eventId="@eventId">Add category</a>
+@if (TempData["SuccessMessage"] != null) { <div class="alert alert-success">@TempData["SuccessMessage"]</div> }
+@if (TempData["ErrorMessage"] != null) { <div class="alert alert-danger">@TempData["ErrorMessage"]</div> }
+<table class="table table-striped"><thead><tr><th>Name</th><th>Age range</th><th></th></tr></thead><tbody>
+@foreach (var category in Model) { <tr><td>@category.CategoryName</td><td>@(category.MinAge?.ToString() ?? "Any") - @(category.MaxAge?.ToString() ?? "Any")</td><td><form asp-action="Delete" asp-route-eventId="@eventId" asp-route-categoryId="@category.CategoryID" method="post"><button class="btn btn-sm btn-outline-danger" type="submit">Delete</button></form></td></tr> }
+</tbody></table>

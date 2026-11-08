@@ -1,0 +1,48 @@
+@model RaceDayWeb.ViewModels.CategoryEditViewModel
+@{
+    ViewData["Title"] = "Add Category";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card theme-card">
+            <div class="card-body p-4">
+                <p class="text-uppercase text-muted mb-1">Organiser tools</p>
+                <h1 class="h3 mb-4">Add event category</h1>
+
+                <form asp-action="Create" asp-route-eventId="@Model.EventId" method="post">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="CategoryName" class="form-label">Category name</label>
+                        <input asp-for="CategoryName" class="form-control" placeholder="e.g. Under 20, Senior, 10km" />
+                        <span asp-validation-for="CategoryName" class="text-danger"></span>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label asp-for="MinAge" class="form-label">Minimum age</label>
+                            <input asp-for="MinAge" class="form-control" min="0" />
+                            <span asp-validation-for="MinAge" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="MaxAge" class="form-label">Maximum age</label>
+                            <input asp-for="MaxAge" class="form-control" min="0" />
+                            <span asp-validation-for="MaxAge" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary">Save category</button>
+                        <a asp-action="Index" asp-route-eventId="@Model.EventId" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

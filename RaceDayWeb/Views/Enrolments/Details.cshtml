@@ -1,0 +1,7 @@
+@model List<RaceDayWeb.ViewModels.EnrolmentDisplayViewModel>
+@{ ViewData["Title"] = "Event Enrolments"; }
+<h1>Event enrolments</h1>
+@if (TempData["ErrorMessage"] != null) { <div class="alert alert-danger">@TempData["ErrorMessage"]</div> }
+<table class="table table-striped"><thead><tr><th>Participant</th><th>Category</th><th>Status</th><th>Enrolled</th></tr></thead><tbody>
+@foreach (var enrolment in Model) { <tr><td>@enrolment.ParticipantName</td><td>@enrolment.CategoryName</td><td>@if (enrolment.Status == "Confirmed") { <span class="badge bg-success">Confirmed</span> } else if (enrolment.Status == "Pending") { <span class="badge bg-warning text-dark">Pending</span> } else { <span class="badge bg-secondary">@enrolment.Status</span> }</td><td>@enrolment.EnrolmentDate.ToString("dd MMM yyyy")</td></tr> }
+</tbody></table>
