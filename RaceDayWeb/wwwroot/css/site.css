@@ -1,0 +1,40 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+  background: linear-gradient(135deg, rgba(7, 29, 59, .96), rgba(11, 76, 117, .9)), url('/images/raceday-background.svg') center/cover fixed;
+  color: #17233c;
+}
+
+.raceday-body > .container { max-width: 1180px; }
+.raceday-navbar { background: linear-gradient(90deg, #071d3b, #0b4c75); }
+.brand-mark { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: #ff8a30; color: white; }
+.nav-link { color: rgba(255,255,255,.9) !important; }
+.nav-link:hover { color: #ffb36b !important; }
+.card, .theme-card { border: 0; border-radius: 16px; box-shadow: 0 12px 30px rgba(2, 20, 40, .15); }
+.event-hero { min-height: 260px; border-radius: 18px; background: linear-gradient(135deg, #0b4c75, #071d3b); background-position: center; background-size: cover; overflow: hidden; }
+.event-hero-overlay { min-height: 260px; padding: 3rem; display: flex; flex-direction: column; justify-content: end; color: white; background: linear-gradient(transparent, rgba(7,29,59,.9)); }
+.btn-primary { background-color: #0b6e99; border-color: #0b6e99; }
+.btn-primary:hover { background-color: #084d70; border-color: #084d70; }
+.btn-success { background-color: #198754; }
+.footer { color: rgba(255,255,255,.75) !important; }
+.footer a { color: #ffb36b; }
+.alert { border-radius: 12px; }
+}

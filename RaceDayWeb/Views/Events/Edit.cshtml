@@ -1,0 +1,73 @@
+﻿@model RaceDayWeb.ViewModels.EventCreateViewModel
+
+@{
+    ViewData["Title"] = "Edit Event";
+}
+
+<h2 class="mb-4">Edit Event</h2>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <!-- Notice the enctype="multipart/form-data" is required for image uploads! -->
+                <form asp-controller="Events" asp-action="Edit" asp-route-id="@ViewBag.EventId" method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    
+                    <div class="mb-3">
+                        <label asp-for="Name" class="form-label">Event Name</label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label">Description</label>
+                        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="EventDate" class="form-label">Date & Time</label>
+                            <input asp-for="EventDate" type="datetime-local" class="form-control" />
+                            <span asp-validation-for="EventDate" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Location" class="form-label">Location</label>
+                            <input asp-for="Location" class="form-control" />
+                            <span asp-validation-for="Location" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Distance" class="form-label">Distance (km)</label>
+                            <input asp-for="Distance" class="form-control" />
+                            <span asp-validation-for="Distance" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="EventType" class="form-label">Event Type</label>
+                            <select asp-for="EventType" class="form-select">
+                                <option value="Run">Run</option>
+                                <option value="Walk">Walk</option>
+                                <option value="Cycle">Cycle</option>
+                            </select>
+                            <span asp-validation-for="EventType" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <!-- THIS IS THE IMAGE UPLOAD BOX -->
+                    <div class="mb-3">
+                        <label asp-for="BannerImage" class="form-label">Update Event Banner Image (Optional)</label>
+                        <input asp-for="BannerImage" type="file" class="form-control" accept=".jpg,.jpeg,.png,.gif" />
+                        <span asp-validation-for="BannerImage" class="text-danger"></span>
+                        <small class="text-muted">Leave blank to keep the current image.</small>
+                    </div>
+
+                    <button type="submit" class="btn btn-warning">Update Event</button>
+                    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

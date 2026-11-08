@@ -1,0 +1,37 @@
+﻿@model List<RaceDayWeb.ViewModels.MyEnrolmentViewModel>
+
+@{
+    ViewData["Title"] = "My Enrolments";
+}
+
+<h2 class="mb-4">My Enrolments</h2>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-info">You haven't enrolled in any events yet.</div>
+}
+else
+{
+    <div class="row">
+        @foreach (var enrolment in Model)
+        {
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-sm">
+                    @if (!string.IsNullOrEmpty(enrolment.BannerImageUrl))
+                    {
+                        <img src="@enrolment.BannerImageUrl" class="card-img-top" style="height: 150px; object-fit: cover;">
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">@enrolment.EventName</h5>
+                        <p class="card-text text-muted">@enrolment.EventDate.ToString("dd MMM yyyy")</p>
+                        <p class="card-text"><strong>Category:</strong> @enrolment.CategoryName</p>
+                        @if (enrolment.Status == "Confirmed")
+                        { <span class="badge bg-success">Confirmed</span> }
+                        else if (enrolment.Status == "Pending")
+                        { <span class="badge bg-warning text-dark">Pending</span> }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

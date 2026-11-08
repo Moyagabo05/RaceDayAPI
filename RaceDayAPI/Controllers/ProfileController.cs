@@ -22,8 +22,8 @@ namespace RaceDayAPI.Controllers
         [RequireAuth]
         public async Task<IActionResult> GetProfile()
         {
-            var userId = HttpContext.Session.GetInt("UserId");
-            var role = HttpContext.Session.GetString("UserRole");
+            var userId = HttpContext.GetUserId();
+            var role = HttpContext.GetRole();
 
             if (userId == null) return Unauthorized("Not logged in.");
 
@@ -54,7 +54,8 @@ namespace RaceDayAPI.Controllers
                     participant.DateOfBirth,
                     participant.Gender,
                     participant.EmergencyContact,
-                    participant.ClubName
+                    participant.ClubName,
+                    participant.ProfilePictureUrl
                 });
             }
 
@@ -65,8 +66,8 @@ namespace RaceDayAPI.Controllers
         [RequireAuth]
         public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileDto dto)
         {
-            var userId = HttpContext.Session.GetInt("UserId");
-            var role = HttpContext.Session.GetString("UserRole");
+            var userId = HttpContext.GetUserId();
+            var role = HttpContext.GetRole();
 
             if (userId == null) return Unauthorized("Not logged in.");
 
@@ -89,6 +90,7 @@ namespace RaceDayAPI.Controllers
                 participant.LastName = dto.LastName;
                 participant.EmergencyContact = dto.EmergencyContact;
                 participant.ClubName = dto.ClubName;
+                participant.ProfilePictureUrl = dto.ProfilePictureUrl;
             }
 
             await _context.SaveChangesAsync();
